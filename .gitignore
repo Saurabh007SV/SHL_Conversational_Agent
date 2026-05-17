@@ -1,0 +1,25 @@
+# Environment variables (DO NOT COMMIT API KEYS)
+.env
+
+# Python Virtual Environment
+env1/
+venv/
+.venv/
+env/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary or unused directories
+shl_chroma_db/
+shl_chroma_db_backup (1)/
+
+# IDEs and OS files
+.vscode/
+.idea/
+.DS_Store
+
+# Note: The 'data/' folder is NOT ignored because 'data/shl_product_catalog_new.json' 
+# and 'data/embeddings.npy' are required for your deployed API to work!

@@ -1,0 +1,7 @@
+fastapi
+pydantic
+openai
+uvicorn
+requests
+python-dotenv
+scikit-learn
