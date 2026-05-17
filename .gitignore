@@ -23,3 +23,15 @@ shl_chroma_db_backup (1)/
 
 # Note: The 'data/' folder is NOT ignored because 'data/shl_product_catalog_new.json' 
 # and 'data/embeddings.npy' are required for your deployed API to work!
+data/minified.json
+
+# Logs
+*.log
+
+# Test / build artifacts
+.pytest_cache/
+dist/
+build/
+*.egg-info/
+htmlcov/
+.coverage

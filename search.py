@@ -1,7 +1,7 @@
 import json
 import logging
 import numpy as np
-from sentence_transformers import SentenceTransformer
+from fastembed import TextEmbedding
 from sklearn.metrics.pairwise import cosine_similarity
 
 logger = logging.getLogger(__name__)
@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 class SemanticSearch:
     def __init__(self, catalog_file="data/shl_product_catalog_new.json", embeddings_file="data/embeddings.npy"):
         self.catalog_minified = []
-        
+
         # Load catalog
         try:
             with open(catalog_file, 'r', encoding='utf-8') as f:
@@ -28,7 +28,7 @@ class SemanticSearch:
         except Exception as e:
             logger.error(f"Error loading catalog: {e}")
 
-        # Load embeddings
+        # Load pre-computed embeddings
         self.catalog_embeddings = None
         try:
             self.catalog_embeddings = np.load(embeddings_file)
@@ -36,17 +36,18 @@ class SemanticSearch:
         except Exception as e:
             logger.error(f"Failed to load embeddings: {e}")
 
-        # Load embedding model
-        logger.info("Initializing SentenceTransformer model 'all-MiniLM-L6-v2'...")
-        self.embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
-        logger.info("Model loaded successfully.")
+        # Use fastembed (ONNX-based, no PyTorch required, same model as embeddings.npy)
+        logger.info("Initializing fastembed model 'BAAI/bge-small-en-v1.5'...")
+        self.embedding_model = TextEmbedding(model_name="BAAI/bge-small-en-v1.5")
+        logger.info("fastembed model initialized successfully.")
 
     def search(self, query: str, top_k: int = 30) -> list:
         if not query.strip():
             query = "assessment"
-            
+
         if self.catalog_embeddings is not None:
-            query_vec = self.embedding_model.encode([query])
+            # Generate query embedding via fastembed (returns a generator)
+            query_vec = np.array(list(self.embedding_model.embed([query])))
             similarities = cosine_similarity(query_vec, self.catalog_embeddings).flatten()
             top_indices = similarities.argsort()[-top_k:][::-1]
             return [self.catalog_minified[i] for i in top_indices]

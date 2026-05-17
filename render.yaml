@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: conversational-assessment-agent
+    runtime: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false   # Set this manually in Render dashboard — do NOT commit API keys
+      - key: MODEL
+        value: llama-3.3-70b-versatile

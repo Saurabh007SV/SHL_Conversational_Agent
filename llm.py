@@ -12,7 +12,12 @@ class LLMAgent:
         if os.getenv("GROQ_API_KEY"):
             self.client = OpenAI(api_key=os.environ["GROQ_API_KEY"], base_url="https://api.groq.com/openai/v1")
         elif os.getenv("OPENAI_API_KEY"):
-            self.client = OpenAI(api_key=os.environ["OPENAI_API_KEY"], base_url=os.environ.get("OPENAI_BASE_URL"))
+            # Only pass base_url if explicitly set — passing None crashes newer openai SDK
+            openai_kwargs = {"api_key": os.environ["OPENAI_API_KEY"]}
+            base_url = os.environ.get("OPENAI_BASE_URL")
+            if base_url:
+                openai_kwargs["base_url"] = base_url
+            self.client = OpenAI(**openai_kwargs)
 
     def generate_chat_response(self, messages: list, retrieved_catalog: list) -> ChatResponse:
         if not self.client:

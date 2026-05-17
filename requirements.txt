@@ -1,7 +1,20 @@
+# fastapi==0.136.1
+# pydantic==2.13.4
+# openai==2.37.0
+# uvicorn==0.47.0
+# gunicorn==23.0.0
+# requests
+# python-dotenv
+# scikit-learn==1.8.0
+# numpy==2.4.5
+# fastembed
 fastapi
 pydantic
 openai
 uvicorn
+gunicorn
 requests
 python-dotenv
 scikit-learn
+numpy
+fastembed

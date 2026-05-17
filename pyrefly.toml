@@ -1,0 +1,7 @@
+# Pyrefly configuration
+# Tells Pyrefly where to find local modules and the virtual environment's packages.
+
+[pyrefly]
+project_includes = ["."]
+search_path = ["."]
+python_interpreter = "./env1/Scripts/python.exe"
